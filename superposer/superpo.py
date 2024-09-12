@@ -127,18 +127,52 @@ def save_nodes_to_txt(graph, file_path):
         for node in graph.nodes():
             f.write(f"{node}\n")
 
-def main():
+import os
+
+# Fonction pour rechercher les fichiers avec une extension spécifique dans un dossier
+def find_files_with_extension(directory, extension):
+    """
+    Parcourt récursivement le répertoire et récupère les chemins relatifs des fichiers ayant l'extension spécifiée.
+
+    :param directory: Chemin du répertoire à parcourir
+    :param extension: Extension de fichier à rechercher (par ex: '.pkl')
+    :return: Liste des chemins relatifs des fichiers correspondant
+    """
+    files_with_extension = []
+
+    # Parcourir tous les fichiers et sous-répertoires
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            # Vérifier si l'extension correspond
+            if file.endswith(extension):
+                # Obtenir le chemin relatif
+                relative_path = os.path.relpath(os.path.join(root, file), directory)
+                files_with_extension.append(relative_path)
+
+    return files_with_extension
+
+
+# Fonction principale 'superpo' avec intégration de la recherche des sous-graphes
+def superpo(initial_graph, search_path):
     # Charger le graphe initial
-    initial_graph = load_graph('graph.pkl')
+    initial = load_graph(initial_graph)
 
-    # Charger les graphes contextuels depuis un dossier
+    # Rechercher les graphes contextuels dans le dossier donné
     contextual_graphs = []
-    contextual_graphs_dir = 'sous_graphe/'  # Chemin du dossier contenant les graphes contextuels
+    contextual_graphs_dir = search_path  # Dossier renseigné par l'utilisateur
 
-    for file_name in os.listdir(contextual_graphs_dir):
-        if file_name.endswith('.pkl'):
-            graph_path = os.path.join(contextual_graphs_dir, file_name)
+    # Trouver les fichiers .pkl dans le répertoire
+    graph_files = find_files_with_extension(contextual_graphs_dir, '.pkl')
+
+    # Charger les graphes contextuels (en évitant le graphe initial)
+    for file_name in graph_files:
+        graph_path = os.path.join(contextual_graphs_dir, file_name)
+
+        # Vérifier que le fichier n'est pas le même que le graphe initial
+        if graph_path != initial_graph:
             contextual_graphs.append(load_graph(graph_path))
+        else:
+            print(f"Le fichier {graph_path} est le graphe initial et ne sera pas traité comme un sous-graphe.")
 
     # Filtrer les nœuds du graphe initial en fonction des graphes contextuels, en se concentrant sur "FAM111B"
     filtered_graph = filter_graph_by_context(initial_graph, contextual_graphs, target_node="FAM111B")
@@ -158,6 +192,3 @@ def main():
 
     # Sauvegarder les nœuds du réseau réduit dans un fichier texte
     save_nodes_to_txt(red_nodes_graph, "reduced_graph_nodes.txt")
-
-if __name__ == "__main__":
-    main()
