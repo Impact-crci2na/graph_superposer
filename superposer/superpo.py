@@ -188,7 +188,7 @@ def superpo(initial_graph, search_path, target_node):
 
     # Extraire et dessiner le sous-graphe des nœuds rouges en gardant les highlights
     red_nodes_graph = extract_red_nodes_graph_with_highlights(highlighted_graph, common_nodes, conserved_edges)
-    draw_red_nodes_graph_with_highlights(red_nodes_graph, target_node")
+    draw_red_nodes_graph_with_highlights(red_nodes_graph, target_node)
 
     # Sauvegarder les nœuds du réseau réduit dans un fichier texte
     save_nodes_to_txt(red_nodes_graph, "reduced_graph_nodes.txt")
