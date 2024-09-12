@@ -6,8 +6,7 @@ setup(
     packages=find_packages(),  # Recherche automatiquement les packages dans ton répertoire
     install_requires=[
         "networkx",
-        "matplotlib",
-        "pickle"
+        "matplotlib"
     ],
     description="A package containing tools for GSEA and clustering on GO terms",
     author="Haladi Ayad, Mike Maillason",
