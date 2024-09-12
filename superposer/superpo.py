@@ -153,7 +153,7 @@ def find_files_with_extension(directory, extension):
 
 
 # Fonction principale 'superpo' avec intégration de la recherche des sous-graphes
-def superpo(initial_graph, search_path):
+def superpo(initial_graph, search_path, target_node):
     # Charger le graphe initial
     initial = load_graph(initial_graph)
 
@@ -175,20 +175,20 @@ def superpo(initial_graph, search_path):
             print(f"Le fichier {graph_path} est le graphe initial et ne sera pas traité comme un sous-graphe.")
 
     # Filtrer les nœuds du graphe initial en fonction des graphes contextuels, en se concentrant sur "FAM111B"
-    filtered_graph = filter_graph_by_context(initial_graph, contextual_graphs, target_node="FAM111B")
+    filtered_graph = filter_graph_by_context(initial_graph, contextual_graphs, target_node)
 
     # Identifier et surligner les chemins conservés
-    highlighted_graph, conserved_edges = highlight_paths(filtered_graph, contextual_graphs, target_node="FAM111B")
+    highlighted_graph, conserved_edges = highlight_paths(filtered_graph, contextual_graphs, target_node)
 
     # Trouver les nœuds en commun entre le graphe initial et les graphes contextuels
     common_nodes = find_common_nodes(filtered_graph, contextual_graphs)
 
     # Visualiser le graphe complet avec surlignage
-    draw_graph_with_highlights(highlighted_graph, common_nodes, target_node="FAM111B", conserved_edges=conserved_edges)
+    draw_graph_with_highlights(highlighted_graph, common_nodes, target_node, conserved_edges=conserved_edges)
 
     # Extraire et dessiner le sous-graphe des nœuds rouges en gardant les highlights
     red_nodes_graph = extract_red_nodes_graph_with_highlights(highlighted_graph, common_nodes, conserved_edges)
-    draw_red_nodes_graph_with_highlights(red_nodes_graph, target_node="FAM111B")
+    draw_red_nodes_graph_with_highlights(red_nodes_graph, target_node")
 
     # Sauvegarder les nœuds du réseau réduit dans un fichier texte
     save_nodes_to_txt(red_nodes_graph, "reduced_graph_nodes.txt")
