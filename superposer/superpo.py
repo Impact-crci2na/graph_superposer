@@ -29,6 +29,7 @@ def filter_graph_by_context(initial_graph, contextual_graphs, target_node="FAM11
                     nodes_to_remove.update(path)
 
     # Supprimer les nœuds marqués
+    nodes_to_remove.discard(target_node)
     filtered_graph = initial_graph.copy()
     filtered_graph.remove_nodes_from(nodes_to_remove)
 
@@ -171,12 +172,11 @@ def superpo(initial_graph, search_path, target_node):
         # Vérifier que le fichier n'est pas le même que le graphe initial
         if graph_path != initial_graph:
             contextual_graphs.append(load_graph(graph_path))
-            print(contextual_graphs[0])
         else:
             print(f"Le fichier {graph_path} est le graphe initial et ne sera pas traité comme un sous-graphe.")
 
     # Filtrer les nœuds du graphe initial en fonction des graphes contextuels, en se concentrant sur "FAM111B"
-    filtered_graph = filter_graph_by_context(initial_graph, contextual_graphs, target_node)
+    filtered_graph = filter_graph_by_context(initial, contextual_graphs, target_node)
 
     # Identifier et surligner les chemins conservés
     highlighted_graph, conserved_edges = highlight_paths(filtered_graph, contextual_graphs, target_node)
