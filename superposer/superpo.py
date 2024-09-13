@@ -170,8 +170,8 @@ def superpo(initial_graph, search_path, target_node):
 
         # Vérifier que le fichier n'est pas le même que le graphe initial
         if graph_path != initial_graph:
-            print(graph_path)
             contextual_graphs.append(load_graph(graph_path))
+            print(contextual_graphs[0])
         else:
             print(f"Le fichier {graph_path} est le graphe initial et ne sera pas traité comme un sous-graphe.")
 
